@@ -1,0 +1,31 @@
+cd -p /home/{{user}}/max
+
+# wifiMacAddress=$(ifconfig wlp3s0 | grep -o -E ..:..:..:..:..:..)
+# wifiMacAddress=123
+ethernetMacAddress=$(ifconfig enp2s0 | grep -o -E ..:..:..:..:..:..)
+# ethernetMacAddress=123
+ztId=$(zerotier-cli info | awk '{ print $3 }')
+# gcloudToken=$(gcloud auth print-identity-token)
+
+echo "Ethernet MAC Addrerss: $ethernetMacAddress"
+echo "Zero Tier Identifier:  $ztId"
+
+echo {{auth_token_generator_source}} | base64 --decode > auth_token_generator_source.js
+
+CLOUD_FUNCTION_PRIVATE_KEY={{CLOUD_FUNCTION_PRIVATE_KEY}} \
+    SERVICE_ACCOUNT_EMAIL={{gcloud_account}} \
+    GOOGLE_OAUTH_TOKEN_API=https://www.googleapis.com/oauth2/v4/token \
+    CLOUD_FUNCTION_URL={{config_url}} \
+    node auth_token_generator_source.js > gcloud.token
+
+gcloudToken=$( cat gcloud.token )
+
+urlWithParams="{{config_url}}?macAddress=$ethernetMacAddress&ztId=$ztId"
+
+curl $urlWithParams -H "Authorization: Bearer $gcloudToken" -o config.zip
+
+unzip config.zip
+
+echo {{decrypt_source}} | base64 --decode > decrypt_source.js
+
+AES_ENCRYPT_IV_SPLIT_CHAR={{AES_ENCRYPT_IV_SPLIT_CHAR}} AES_ENCRYPT_IV={{AES_ENCRYPT_IV}} AES_ENCRYPT_PADDING_CHAR={{AES_ENCRYPT_PADDING_CHAR}} node decrypt_source.js env.docker $ethernetMacAddress

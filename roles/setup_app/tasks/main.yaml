@@ -1,0 +1,7 @@
+---
+
+  - name: Download env and decrypt
+    import_tasks: download_env_and_decrypt.yaml
+
+  - name: Run Apps
+    import_tasks: run_apps.yaml

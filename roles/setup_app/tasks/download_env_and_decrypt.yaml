@@ -1,0 +1,30 @@
+---
+
+  - name: Clean artifact path
+    file:
+      state: absent
+      path: /home/{{user}}/max/
+
+  - name: Create a directory if it does not exist
+    file:
+      path: /home/{{user}}/max
+      state: directory
+      mode: '0755'
+  
+  - name: Download config Ansible Template 
+    template:
+      src: ../templates/download_config.j2
+      dest: /home/{{user}}/max/download_config.sh
+      mode: '0755'
+
+  - name: Install {{packages}} node.js package globally.
+    shell: npm install -g {{packages}}
+  
+  - name: Link {{packages}} node.js package.
+    shell: npm link {{packages}}
+
+  - name: Execute download_config.sh
+    shell: "cd /home/{{user}}/max && ./download_config.sh"
+
+  - name: Get minicampus code
+    shell: "cd /home/{{user}}/max && minicampuscode=$(cat env.docker | grep MINICAMPUS_CODE | sed -n -e 's/^.*=//p' | awk '{$1=$1};1') && sed -i \"s/minicampus_code_replacement_var/$minicampuscode/\" docker-compose.yml"
