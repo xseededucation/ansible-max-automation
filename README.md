@@ -1,0 +1,1 @@
+## MAX Box setup procedure
