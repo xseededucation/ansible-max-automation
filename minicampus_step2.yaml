@@ -1,0 +1,6 @@
+---
+- hosts: max
+  become: true
+  roles:
+    - zerotier
+    - setup_app
