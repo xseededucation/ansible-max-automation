@@ -1,3 +1,8 @@
+- name: Install docker-py
+  pip:
+    name: "docker-py"
+    state: present
+
 - name: Tear down existing services
   docker_compose:
     project_src: /home/{{user}}/max
@@ -7,11 +12,6 @@
   docker_compose:
     project_src: /home/{{user}}/max
   register: output
-
-- name: Install docker-py
-  pip:
-    name: "docker-py"
-    state: present
 
 - debug:
     var: output
