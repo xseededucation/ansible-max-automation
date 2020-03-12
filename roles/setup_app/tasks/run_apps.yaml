@@ -15,30 +15,5 @@
   docker_compose:
     project_src: /home/{{user}}/max
     build: no
-  register: output
-
-- debug:
-    var: output
-
-- assert:
-    that: "not output.changed "
-
-- name: Stop all services
-  docker_compose:
-    project_src: /home/{{user}}/max
-    build: no
-    stopped: yes
-  register: output
-
-- debug:
-    var: output
-
-- name: Restart services
-  docker_compose:
-    project_src: /home/{{user}}/max
-    build: no
     restarted: yes
   register: output
-
-- debug:
-    var: output
