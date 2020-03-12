@@ -8,6 +8,11 @@
     project_src: /home/{{user}}/max
   register: output
 
+- name: Install docker-py
+  pip:
+    name: "docker-py"
+    state: present
+
 - debug:
     var: output
 
