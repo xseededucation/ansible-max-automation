@@ -1,0 +1,16 @@
+- name: Setup network links
+  template:
+    src: ../templates/configure_links.j2
+    dest: /home/{{user}}/configure_links.sh
+    mode: '0755'
+
+- name: Configure Network
+  shell: "cd /home/{{user}} && ./configure_links.sh"
+
+
+- name: Netplan generate and apply
+  shell: "netplan generate && netplan apply"
+
+- name: Reboot machine 
+  reboot:
+    reboot_timeout: 3600

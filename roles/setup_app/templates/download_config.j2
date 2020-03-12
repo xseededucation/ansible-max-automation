@@ -1,8 +1,11 @@
 cd -p /home/{{user}}/max
 
-# wifiMacAddress=$(ifconfig wlp3s0 | grep -o -E ..:..:..:..:..:..)
+ethernet_link=$(ip -o link | awk 'BEGIN{FS=": "} $2!="lo" {print $2}' | grep "^e")
+wifi_link=$(ip -o link | awk 'BEGIN{FS=": "} $2!="lo" {print $2}' | grep "^w")
+
+# wifiMacAddress=$(ifconfig $wifi_link | grep -o -E ..:..:..:..:..:..)
 # wifiMacAddress=123
-ethernetMacAddress=$(ifconfig enp2s0 | grep -o -E ..:..:..:..:..:..)
+ethernetMacAddress=$(ifconfig $ethernet_link | grep -o -E ..:..:..:..:..:..)
 # ethernetMacAddress=123
 ztId=$(zerotier-cli info | awk '{ print $3 }')
 # gcloudToken=$(gcloud auth print-identity-token)
