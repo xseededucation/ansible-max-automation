@@ -1,0 +1,11 @@
+ethernet_link=$(ip -o link | awk 'BEGIN{FS=": "} $2!="lo" {print $2}' | grep "^e")
+
+echo "network:
+    version: 2
+    renderer: networkd
+    ethernets:
+        $ethernet_link:
+            optional: true
+            dhcp4: yes
+            addresses: 
+                - 10.255.255.254/16" > /etc/netplan/01-netcfg-ethernet.yaml

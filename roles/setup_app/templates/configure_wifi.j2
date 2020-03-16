@@ -1,0 +1,13 @@
+wifi_link=$(ip -o link | awk 'BEGIN{FS=": "} $2!="lo" {print $2}' | grep "^w")
+
+echo "network:
+    version: 2
+    renderer: networkd
+    wifis:
+        $wifi_link:
+            optional: true
+            dhcp4: true
+            dhcp6: true
+            access-points:
+              \"{{wifi_username}}\":
+                  password: {{wifi_password}}" > /etc/netplan/01-netcfg-wifi.yaml
