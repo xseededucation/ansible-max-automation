@@ -1,22 +1,24 @@
-- name: Setup wifi network
-  template:
-    src: ../templates/configure_wifi.j2
-    dest: /home/{{user}}/configure_wifi.sh
-    mode: '0755'
+---
 
-- name: Setup ethernet network
-  template:
-    src: ../templates/configure_ethernet.j2
-    dest: /home/{{user}}/configure_ethernet.sh
-    mode: '0755'
+  - name: Setup wifi network
+    template:
+      src: ../templates/configure_wifi.j2
+      dest: /home/{{user}}/configure_wifi.sh
+      mode: '0755'
 
-- name: Configure Network
-  shell: "cd /home/{{user}} && ./configure_wifi.sh && ./configure_ethernet.sh"
+  - name: Setup ethernet network
+    template:
+      src: ../templates/configure_ethernet.j2
+      dest: /home/{{user}}/configure_ethernet.sh
+      mode: '0755'
+
+  - name: Configure Network
+    shell: "cd /home/{{user}} && ./configure_wifi.sh && ./configure_ethernet.sh"
 
 
-- name: Netplan generate and apply
-  shell: "netplan generate && netplan apply"
+  - name: Netplan generate and apply
+    shell: "netplan generate && netplan apply"
 
-- name: Reboot machine 
-  reboot:
-    reboot_timeout: 3600
+  - name: Reboot machine 
+    reboot:
+      reboot_timeout: 3600
