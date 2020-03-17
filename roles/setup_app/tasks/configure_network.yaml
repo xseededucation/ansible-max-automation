@@ -15,11 +15,9 @@
   - name: Configure Network
     shell: "cd /home/{{user}} && ./configure_wifi.sh && ./configure_ethernet.sh"
 
-
   - name: Netplan generate and apply
     shell: "netplan generate && netplan apply"
-
+    
   - name: Reboot machine 
     reboot:
       reboot_timeout: 3600
-      
