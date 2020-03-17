@@ -1,2 +1,2 @@
 ---
-  packages: "aes-js request request-promise crypto"
+packages: "aes-js request request-promise crypto"

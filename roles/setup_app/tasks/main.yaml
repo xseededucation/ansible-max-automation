@@ -1,10 +1,9 @@
 ---
+- name: Configure WiFi
+  import_tasks: configure_network.yaml
 
-  - name: Configure WiFi
-    import_tasks: configure_network.yaml
+- name: Download env and decrypt
+  import_tasks: download_env_and_decrypt.yaml
 
-  - name: Download env and decrypt
-    import_tasks: download_env_and_decrypt.yaml
-
-  - name: Run Apps
-    import_tasks: run_apps.yaml
+- name: Run Apps
+  import_tasks: run_apps.yaml

@@ -1,14 +1,13 @@
 ---
-
 - name: Installing ZERO Tier
   shell:
     'curl -s https://raw.githubusercontent.com/zerotier/ZeroTierOne/master/doc/contact%40zerotier.com.gpg | gpg --import && \
     if z=$(curl -s https://install.zerotier.com/ | gpg); then echo "$z" | sudo bash; fi'
-  
+
 - name: Change file ownership, group and permissions
   file:
     path: /var/lib/zerotier-one/authtoken.secret
-    mode: '0644'
+    mode: "0644"
 
 - name: Add to network {{zerotier_network}}
   command: zerotier-cli join {{zerotier_network}}
